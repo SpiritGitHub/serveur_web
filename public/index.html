@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat en Ligne</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div class="screen join-screen active">
+            <div class="form">
+                <h2>Join Chatroom</h2>
+                <div class="form-input">
+                    <input type="text" id="username" placeholder="username">
+                </div>
+                <div class="form-input">
+                    <button id="join-user">Rejoindre</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="screen chat-screen">
+            <div class="header">
+                <div class="logo">Chatroom</div>
+                <div>
+                    <button id="group-chat">Chat Groupé</button>
+                    <button id="connected-users-btn">Utilisateurs Connectés</button>
+                    <button id="exit-chat">Quitter</button>
+                </div>
+            </div>
+            <div class="messages">
+                <!-- Messages du chat de groupe ici -->
+            </div>
+            <div class="typebox">
+                <input type="text" id="message-input">
+                <button id="send-message">Send</button>
+            </div>
+        </div>
+
+        <div class="screen connected-users-screen">
+            <div class="header">
+                <div class="logo">Utilisateurs Connectés</div>
+                <button id="back-to-chat">Retour au Chat</button>
+            </div>
+            <ul id="user-list">
+                <!-- La liste des utilisateurs connectés sera ajoutée ici dynamiquement -->
+            </ul>
+        </div>
+
+        <div class="screen private-chat-screen">
+            <div class="header">
+                <div class="logo">Chat Privé avec <span id="private-chat-name"></span></div>
+                <button id="exit-private-chat">Quitter</button>
+            </div>
+            <div class="messages private-messages">
+                <!-- Messages du chat privé ici -->
+            </div>
+            <div class="typebox">
+                <input type="text" id="private-message-input">
+                <button id="send-private-message">Send</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <script type="text/javascript" src="socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="code.js"></script>
+</body>
+</html>

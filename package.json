@@ -1,0 +1,22 @@
+{
+  "name": "serveur-web",
+  "version": "1.0.0",
+  "description": "serveur de chat ",
+  "main": "script.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "serveur chat"
+  },
+  "keywords": [
+    "[]"
+  ],
+  "author": "Spirit",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  }
+}
