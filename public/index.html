@@ -1,40 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Chat en Ligne</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
-        <div class="screen join-screen active">
-            <div class="from">
-                <h2>Join Chatroom</h2>
-                <div class="form-input">
-                    
-                    <input type="text" id="username" placeholder="username">
-                </div>
-                <div class="form-input">
-                    <button id="join-user">Rejoindre</button>
-                </div>
-            </div>
-        </div>
-        <div class="screen chat-screen">
-            <div class="header">
-                <div class="logo">Chatroom</div>
-                <button id="exit-chat">Quitter</button>
-            </div>
-            <div class="messages">
-                
-            </div>
-            <div class="typebox">
-                <input type="text" id="message-input">
-                <button id="send-message">Send</button>
-            </div>
-        </div>
+    <div id="login-page" class="page">
+        <input type="text" id="username" placeholder="Enter username">
+        <button id="login-button">Login</button>
     </div>
 
+    <div id="user-selection-page" class="page" style="display:none;">
+        <select id="user-list">
+            <option value="all">Everyone</option>
+        </select>
+        <button id="continue-button">Continue</button>
+    </div>
 
-    <script type="text/javascript" src="socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="code.js"></script>
+    <div id="chat-page" class="page" style="display:none;">
+        <div class="chat-header">
+            <button id="back-button">Retour</button>
+            <button id="quit-button">Quitter</button>
+        </div>
+        <div id="chat-box"></div>
+        <input type="text" id="message-input" placeholder="Type a message...">
+        <button id="send-button">Envoyer</button>
+    </div>
+    
+    <script src="http://localhost:5001/socket.io/socket.io.js"></script>
+
+    <script src="script.js"></script>
+    
 </body>
 </html>

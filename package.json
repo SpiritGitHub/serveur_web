@@ -1,17 +1,14 @@
 {
-  "name": "serveur-web",
+  "name": "chat-en-ligne",
   "version": "1.0.0",
-  "description": "serveur de chat ",
-  "main": "script.js",
+  "description": "site de chat en temps reel",
+  "main": "server.js",
   "scripts": {
-    "test": "start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "serveur chat"
+    "test": "start",
+    "start": "node server.js"
   },
   "keywords": [
-    "[]"
+    "serveurWeb"
   ],
   "author": "Spirit",
   "license": "ISC",

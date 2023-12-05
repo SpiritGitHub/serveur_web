@@ -1,49 +1,65 @@
-const express = require("express");
-const path = require("path");
+const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
+
 const app = express();
-const server = require("http").createServer(app);
-const io = require("socket.io")(server);
+const server = http.createServer(app);
+const io = socketIO(server);
 
 let users = {};
 
-app.use(express.static(path.join(__dirname + "/public")));
+app.use(express.static('public'));
 
-io.on("connection", function(socket){
-
-    socket.on("newuser", function(username){
+io.on('connection', (socket) => {
+    socket.on('login', (username) => {
         users[socket.id] = username;
-        socket.emit("updateUsersList", Object.values(users));
-        socket.broadcast.emit("update", username + " a rejoint la conversation");
-        io.emit("updateUsersList", Object.values(users));
+        updateAllUserLists();
+        socket.broadcast.emit('userConnected', username);
     });
 
-    socket.on("exituser", function(username){
+    socket.on('sendMessage', (data) => {
+        const messageData = { message: data.message, sender: users[socket.id] };
+    
+        socket.broadcast.emit('message', messageData);
+    
+        if (data.recipient !== 'all') {
+            sendPrivateMessage(socket, data);
+        }
+    });
+
+    socket.on('logout', () => {
+        const disconnectedUsername = users[socket.id];
         delete users[socket.id];
-        socket.broadcast.emit("update", username + " a quitté la conversation");
-        io.emit("updateUsersList", Object.values(users));
+        updateAllUserLists();
+        if (disconnectedUsername) {
+            socket.broadcast.emit('userDisconnected', disconnectedUsername);
+        }
     });
 
-    socket.on("chat", function(message){
-        socket.broadcast.emit("chat", message);
-    });
-
-    socket.on("private_chat", function(data){
-       
-        socket.to(data.to).emit("private_chat", {
-            from: socket.id,
-            message: data.message
-        });
-    });
-
-    socket.on("disconnect", function(){
-        if(users[socket.id]){
-            socket.broadcast.emit("update", users[socket.id] + " a quitté la conversation");
-            delete users[socket.id];
-            io.emit("updateUsersList", Object.values(users));
+    socket.on('disconnect', () => {
+        const disconnectedUsername = users[socket.id];
+        delete users[socket.id];
+        updateAllUserLists();
+        if (disconnectedUsername) {
+            socket.broadcast.emit('userDisconnected', disconnectedUsername);
         }
     });
 });
 
-server.listen(5000, () => {
-    console.log('Serveur démarré sur le port 5000');
+function updateAllUserLists() {
+    io.emit('updateUserList', Object.values(users));
+}
+
+function sendPrivateMessage(socket, data) {
+    const recipientSocketId = Object.keys(users).find(key => users[key] === data.recipient);
+    if (recipientSocketId) {
+        const messageData = { message: data.message, sender: users[socket.id] };
+        socket.to(recipientSocketId).emit('message', messageData);
+        // Confirmer à l'expéditeur
+        socket.emit('message', { ...messageData, fromSelf: true });
+    }
+}
+
+server.listen(5001, () => {
+    console.log('Server running on port 5001');
 });
